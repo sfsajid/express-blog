@@ -8,6 +8,7 @@ const getHome = async (req, res, next) => {
     try {
         const currentPage = parseInt(req.query.page, 10) || 1;
         const itemPerPage = 10;
+        const featuredPosts = await Post.find({}).sort({ views: -1 }).limit(3);
         const posts = await Post.find({})
             .populate({
                 path: 'author',
@@ -18,7 +19,9 @@ const getHome = async (req, res, next) => {
             .limit(itemPerPage);
         const totalPosts = await Post.countDocuments();
         const totalPages = Math.ceil(totalPosts / itemPerPage);
-        const logged = {};
+        const logged = {
+            bookmarks: [],
+        };
         if (req.user) {
             const profile = await Profile.findOne({ user: req.user._id });
             logged.bookmarks = profile ? profile.bookmarks : [];
@@ -31,6 +34,7 @@ const getHome = async (req, res, next) => {
             totalPages,
             logged,
             itemPerPage,
+            featuredPosts,
         });
     } catch (err) {
         next(err);
@@ -71,7 +75,9 @@ const getUser = async (req, res, next) => {
             .limit(10);
         const totalPosts = await Post.countDocuments();
         const totalPages = Math.ceil(totalPosts / itemPerPage);
-        const logged = {};
+        const logged = {
+            bookmarks: [],
+        };
         if (req.user) {
             const profile = await Profile.findOne({ user: req.user._id });
             logged.bookmarks = profile ? profile.bookmarks : [];
@@ -133,6 +139,7 @@ const singlePost = async (req, res, next) => {
             liked.disliked = post.dislikes.includes(req.user._id);
         }
         post.fullUrl = fullUrl;
+        await Post.findByIdAndUpdate(post._id, { $inc: { views: 1 } });
         res.render('pages/single-post', {
             title: post.title,
             flashMessage: Flash.getMessage(req),
