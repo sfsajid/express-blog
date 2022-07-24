@@ -1,0 +1,144 @@
+<%- include('../../../partials/dashboard-header.ejs') %>
+    <div class="card shadow mb-3">
+        <div class="card-title py-3 text-center">
+            <h4>Edit Post</h4>
+        </div>
+        <div class="card-body">
+            <form action="/posts/editpost/<%= values.posturl %>" method="POST">
+                <div class="form-group <%= error.title ? 'mb-5': 'mb-4' %>">
+                    <label for="title">
+                        <h4>Title</h4>
+                    </label>
+                    <input type="text" class="form-control form-control-lg<%= error.title ? ' is-invalid': '' %>"
+                        id="title" name="title" placeholder="Title of post"
+                        value="<%= values.title ? values.title : '' %>">
+                    <div class="invalid-feedback">
+                        <%= error.title %>
+                    </div>
+                </div>
+                <div class="form-group <%= error.body ? 'mb-5': 'mb-4' %>">
+                    <label for="body">
+                        <h4>Post Body</h4>
+                    </label>
+                    <textarea class="form-control<%= error.body ? ' is-invalid': '' %>" id="body"
+                        name="body"><%= values.body ? values.body : '' %></textarea>
+                    <div class="invalid-feedback mt-2">
+                        <%= error.body %>
+                    </div>
+                </div>
+                <div class="form-group <%= error.tags ? 'mb-5': 'mb-4' %>">
+                    <label for="tags">
+                        <h5>Tags</h5>
+                    </label>
+                    <input type="text" class="form-control form-control-lg<%= error.tags ? ' is-invalid': '' %>"
+                        id="tags" name="tags" placeholder="Tags separated by comma"
+                        value="<%= values.tags ? values.tags: '' %>">
+                    <div class="invalid-feedback">
+                        <%= error.tags %>
+                    </div>
+                </div>
+                <div class="mt-2 mb-5">
+                    <h5 class="mb-2">Post Thumbnail</h5>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <img src="<%= values.thumbnail %>" alt="thumbnail" id="thumbnail" class="thumbnail">
+                        </div>
+                        <div class="ms-5 d-flex flex-column py-1 justify-content-between">
+                            <div class="mx-auto">
+                                <label for="thumbPhoto" class="btn btn-primary" tabindex="0">
+
+                                    <i class="bi fs-6 bi-upload d-block"></i>
+                                    <input type="file" id="thumbPhoto" accept="image/png, image/jpeg, image/jpg"
+                                        hidden="" />
+                                </label>
+                            </div>
+
+                            <button type="button" class="btn btn-success fs-6" id="galleryBtn"><i
+                                    class="bi bi-images"></i></button>
+
+                            <button type="button" id="resetThumb" class="btn btn-outline-secondary">
+                                <i class="bi fs-6 bi-recycle"></i>
+                            </button>
+                        </div>
+                        <input type="text" id="post-thumbnail" name="thumbnail" value="<%= values.thumbnail %>" hidden>
+                    </div>
+
+                </div>
+                <div class="mb-5">
+                    <label for="posturl">
+                        <h5>Post URL</h5>
+                    </label>
+                    <div class="input-group input-group-lg rounded-2">
+                        <span class="input-group-text" id="mainhost"></span>
+                        <input type="text" class="form-control<%= error.url ? ' invalid-feedback': '' %>" id="posturl"
+                            name="posturl" value="<%= values.posturl ? values.posturl: '' %>">
+                        <button type="button" id="urlbtn" class="btn btn-primary fs-5 border"><i
+                                class="bi bi-arrow-repeat"></i>
+                        </button>
+                        <div class="invalid-feedback pt-3">
+                            <%= error.url ? error.url: '' %>
+                        </div>
+                    </div>
+                    <input type="text" id="postId" value="<%= values.id ? values.id: '' %>" hidden>
+
+                </div>
+
+                <button type="submit" id="submit" class="btn btn-lg btn-primary">Update Post</button>
+                <button type="button" class="btn btn-danger btn-lg ms-3" data-mdb-toggle="modal"
+                    data-mdb-target="#deleteModal">Delete
+                    Post</button>
+            </form>
+        </div>
+    </div>
+    <!-- post section ends here -->
+    <!-- Modal Gallery -->
+    <div class="modal top fade" id="gallery" tabindex="-1" aria-labelledby="galleryLabel" aria-hidden="true"
+        data-mdb-backdrop="static" data-mdb-keyboard="true">
+        <div class="modal-dialog modal-lg ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="galleryLabel">Image Gallery</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="gallery-div">
+                        <!-- <div class="col-6 col-md-4 col-lg-3 image-gallery"><img src="/images/thumbnail.jpg" alt="">
+                            <button class="btn-plus"><i class="bi bi-plus-circle-fill"></i></button>
+                        </div>
+                         -->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Post Modal -->
+    <div class="modal top fade" id="deleteModal" tabindex="-1" aria-hidden="true" data-mdb-backdrop="true"
+        data-mdb-keyboard="true">
+        <div class="modal-dialog modal-sm  modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill text-danger"></i> Alert</h5>
+                    <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">Do you want to delete this post?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger"
+                        onclick="window.location.href = '/posts/delete/<%= values.posturl %>'">Yes</button>
+                    <button type="button" class="btn btn-warning" data-mdb-dismiss="modal">
+                        No
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div <%- include('../../../partials/dashboard-footer.ejs') %>
+
+    <script src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
+    <script src="/scripts/froala.js"></script>
+    <script src="/scripts/thumbnail.js"></script>
+
+    </body>
+
+    </html>

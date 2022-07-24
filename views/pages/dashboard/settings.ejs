@@ -1,0 +1,50 @@
+<%- include('../../partials/dashboard-header.ejs') %>
+    <div class="card mb-1 shadow">
+        <div class="card-header">
+            <h4>Change Password</h4>
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-between">
+                <div class="col-0 col-md-5 d-none d-md-block">
+                    <img src="/images/unlock.svg" alt="login form" class="img-fluid h-100" />
+                </div>
+                <div class="col-12 col-md-7">
+                    <form action="/dashboard/settings/changepassword" method="POST">
+                        <div class="form-outline <%= error.password ? 'mb-5' : 'mb-4'%>">
+                            <input type="password" id="password" name="password"
+                                class="form-control form-control-lg <%= error.password ? 'is-invalid' : '' %>" />
+                            <label class="form-label" for="password">Old Password</label>
+                            <div class="invalid-feedback">
+                                <%= error.password %>
+                            </div>
+                        </div>
+                        <div class="form-outline <%= error.newPassword ? 'mb-5' : 'mb-4'%>">
+                            <input type="password" id="newpassword" name="newPassword"
+                                class="form-control form-control-lg <%= error.newPassword ? 'is-invalid' : '' %>" />
+                            <label class="form-label" for="newpassword">New Password</label>
+                            <div class="invalid-feedback">
+                                <%= error.newPassword %>
+                            </div>
+                        </div>
+                        <div class="form-outline <%= error.confirmPassword ? 'mb-5' : 'mb-4'%>">
+                            <input type="password" id="confirmpassword" name="confirmPassword"
+                                class="form-control form-control-lg <%= error.confirmPassword ? 'is-invalid' : '' %>" />
+                            <label class="form-label" for="password">Confirm Password</label>
+                            <div class="invalid-feedback">
+                                <%= error.confirmPassword %>
+                            </div>
+                        </div>
+                        <div class="pt-1 mb-4">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Change Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <%- include('../../partials/dashboard-footer.ejs') %>
+        </body>
+
+        </html>

@@ -1,0 +1,47 @@
+<%- include('../../partials/dashboard-header.ejs') %>
+    <div class="card mb-1 card-body shadow">
+        <% if (comments.length===0) { %>
+            <div class="container d-flex vh-100 flex-column justify-content-center align-items-center">
+                <div class="error">
+                    <h1>Oops!</h1>
+                </div>
+                <div class="text-center">
+                    <h5 class="text-muted py-1 fw-bolder">
+                        You have no comments available right now.
+                    </h5>
+
+                </div>
+            </div>
+            <% } else { %>
+                <h5 class="card-header p-0 pb-2 mb-3">My Comments</h5>
+                <% for (let comment of comments) { %>
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="<%= comment.post.thumbnail %>" class="rounded"
+                            style="height: 5rem; width: 5rem; object-fit: cover;" alt="thumbnail">
+                        <div class="ms-3">
+                            <p class="card-text mb-2">
+                                <a class="muted-link"
+                                    href="/<%= `${comment.post.author.username}/${comment.post.url}/#comment-${toDecimal(comment._id)}` %>">
+                                    <%- `${cmTruncate(comment.body, 25)} <span class="text-black">on</span>
+                                        "${cmTruncate(comment.post.title, 40)}" ` %>
+                                </a>
+
+                            </p>
+                            <small class="text-muted">
+                                <i class="bi bi-calendar4 me-2"></i>
+                                <%= formatDate(comment.createdAt, 'DD MMM, YYYY' ) %>
+                            </small>
+
+
+                        </div>
+                    </div>
+                    <% } %>
+                        <% } %>
+                            <% if (totalPages> 1) { %>
+                                <%- include('../partials/pagination.ejs') %>
+                                    <% } %>
+    </div>
+    <%- include('../../partials/dashboard-footer.ejs') %>
+        </body>
+
+        </html>

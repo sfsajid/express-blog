@@ -1,0 +1,145 @@
+<%- include('../partials/header.ejs') %>
+    <div class="container py-3">
+        <!-- Carousel wrapper -->
+        <div id="carouselMaterialStyle" class="carousel slide carousel-fade mb-4" data-mdb-ride="carousel">
+            <!-- Indicators -->
+            <div class="carousel-indicators">
+                <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-mdb-target="#carouselMaterialStyle" data-mdb-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+
+            <!-- Inner -->
+            <div class="carousel-inner rounded-5 shadow-4-strong">
+                <!-- Single item -->
+                <div class="carousel-item active">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(15).webp" class="d-block w-100"
+                        alt="Sunset Over the City" />
+                    <div class="carousel-caption d-md-block">
+                        <h5>First slide label</h5>
+                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                    </div>
+                </div>
+
+                <!-- Single item -->
+                <div class="carousel-item">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(22).webp" class="d-block w-100"
+                        alt="Canyon at Nigh" />
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Second slide label</h5>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    </div>
+                </div>
+
+                <!-- Single item -->
+                <div class="carousel-item">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/Slides/img%20(23).webp" class="d-block w-100"
+                        alt="Cliff Above a Stormy Sea" />
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Third slide label</h5>
+                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Inner -->
+
+            <!-- Controls -->
+            <button class="carousel-control-prev" type="button" data-mdb-target="#carouselMaterialStyle"
+                data-mdb-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-mdb-target="#carouselMaterialStyle"
+                data-mdb-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!-- Carousel wrapper -->
+        <div class="row">
+            <div class="col-0 col-md-2 d-none d-lg-block"><img src="/images/ads.png"
+                    class="img-fluid vh-100 sticky-md-top" alt="">
+            </div>
+            <div class="col">
+                <section class="posts">
+                    <% for (let post of posts){ %>
+                        <div class="mx-auto card cm-shadow mb-3 mb-md-4">
+                            <div class="d-md-flex">
+                                <div class="bg-image d-md-none d-block hover-zoom pointer">
+                                    <img src="<%= post.thumbnail %>" alt="img"
+                                        style="height: 12rem; object-fit: cover; width: 100%;" />
+                                    <div class="mask"><span class="badge badge-secondary text-uppercase mt-2 ms-2">
+                                            <%= post.tags[0] %>
+                                        </span></div>
+                                </div>
+                                <div class="d-none d-md-block post-thumbnail pointer">
+
+                                    <img src="<%= post.thumbnail %>" class="img-fluid rounded-start" alt="">
+                                </div>
+                                <div class="w-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">
+                                            <a href="/<%= post.author.username %>/<%= post.url %>" class="post-title">
+                                                <%= post.title %>
+                                            </a>
+
+                                        </h5>
+
+                                        <p class="card-text text-muted" style="font-size: 0.9rem;">
+                                            <%= truncate(post.body) %>
+                                        </p>
+
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <span class="badge badge-secondary text-uppercase d-none d-md-block">
+                                            <%= post.tags[0] %>
+                                        </span>
+                                        <small class="text-muted">
+                                            <span><i class="bi bi-calendar2 me-1"></i> </span>
+                                            <%= moment(post.createdAt) %>
+                                        </small>
+                                        <small class="text-muted user">
+                                            <i class="bi bi-person-fill me-1"></i>
+                                            <a href="/user/<%= post.author.username %>" class="muted-link">
+                                                <%= post.author.name %>
+                                            </a>
+                                        </small>
+                                        <small class="text-muted">
+                                            <i class="bi bi-clock me-1"></i>
+                                            <%= round(post.readTime) %> min read
+
+                                        </small>
+                                        <% if (logged.bookmarks.length> 0) { %>
+                                            <span class="bookmark pointer" data-post="<%= post.url %>">
+                                                <% if (logged.bookmarks.includes(post.id)) { %>
+                                                    <i class="bi bi-bookmark-fill"></i>
+                                                    <% } else { %>
+                                                        <i class="bi bi-bookmark"></i>
+                                                        <% } %>
+                                            </span>
+                                            <% } %>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <% } %>
+                </section>
+                <% if (totalPages> 1) { %>
+                    <%- include('../partials/pagination.ejs') %>
+                        <% } %>
+            </div>
+            <div class="col-0 col-md-2 d-none d-lg-block"><img src="/images/ads.png"
+                    class="img-fluid vh-100 sticky-md-top" alt=""></div>
+        </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+        <script src="/scripts/bookmark.js"></script>
+        </body>
+
+        </html>

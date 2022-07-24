@@ -1,0 +1,27 @@
+<%- include('../../partials/header.ejs') %>
+
+    <div class="container vh-100 d-flex flex-column justify-content-center align-items-center py-3">
+        <div class="error">
+            <h1>Oops!</h1>
+        </div>
+        <div class="text-center">
+            <h2 class="text-black pt-1 fw-bolder">
+                <%= name %>
+            </h2>
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-12">
+                    <p>
+                        <%= message %>
+                    </p>
+                </div>
+            </div>
+            <a href="/" class="btn btn-primary btn-lg btn-rounded shadow"><span class="fw-bold">Go to
+                    Homepage</span></a>
+        </div>
+    </div>
+
+    <%- include('../../partials/footer.ejs') %>
+
+        </body>
+
+        </html>

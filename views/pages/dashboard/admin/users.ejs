@@ -1,0 +1,66 @@
+<%- include('../../../partials/dashboard-header.ejs') %>
+    <div class="card card-body shadow p-3 mb-3">
+        <h5 class="fw-normal"> <i class="bi bi-person"></i> Total Users: <%= users.length %>
+        </h5>
+        <h5 class="fw-normal"> <i class="bi bi-person-check"></i> Active Users: <%= activeUsers.length %>
+        </h5>
+    </div>
+    <div class="card card-body shadow p-1">
+        <table class="table table-hover table-borderless align-middle mb-0 bg-white">
+            <thead class="bg-light">
+                <tr>
+                    <th>Name</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Joined</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let user of users) { %>
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="<%= user.profilePics %>" alt="" style="width: 45px; height: 45px"
+                                    class="rounded-circle" />
+                                <div class="ms-3">
+                                    <p class="fw-bold mb-1">
+                                        <%= user.name %>
+                                    </p>
+                                    <p class="text-muted mb-0">
+                                        <%= user.email %>
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="fw-normal mb-1">Software engineer</p>
+                            <p class="text-muted mb-0">IT department</p>
+                        </td>
+                        <td>
+                            <% if (user.verified) { %>
+                                <span class="badge badge-success rounded-pill d-inline">Active</span>
+                                <% } else { %>
+                                    <span class="badge badge-danger rounded-pill d-inline">Inactive</span>
+                                    <% } %>
+
+                        </td>
+                        <td>
+                            <%= formatDate(user.createdAt, "DD MMM, YYYY" ) %>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-link btn-sm btn-rounded">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                    <% } %>
+
+
+            </tbody>
+        </table>
+    </div>
+    <%- include('../../../partials/dashboard-footer.ejs') %>
+        </body>
+
+        </html>

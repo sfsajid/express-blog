@@ -1,0 +1,19 @@
+<nav aria-label="Page Navigation">
+    <ul class="pagination">
+        <li class="page-item <%= currentPage === 1 ? 'disabled d-none': '' %>">
+            <a href="<%- `?page=${currentPage - 1}` %>" class="page-link"
+                ><i class="bi bi-chevron-double-left"></i
+            ></a>
+        </li>
+        <% for( let i=1; i <=totalPages; i++ ) { %>
+        <li class="page-item <%= currentPage === i ? 'active': '' %>">
+            <a href="<%- `?page=${i}` %>" class="page-link"> <%= i %> </a>
+        </li>
+        <% } %>
+        <li class="page-item <%= currentPage === totalPages ? 'disabled d-none': '' %>">
+            <a href="<%- `?page=${currentPage + 1}` %>" class="page-link"
+                ><i class="bi bi-chevron-double-right"></i
+            ></a>
+        </li>
+    </ul>
+</nav>

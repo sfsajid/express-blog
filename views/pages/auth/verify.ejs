@@ -1,0 +1,27 @@
+<%- include('../../partials/header.ejs') %>
+    <div class="container vh-100">
+        <div class="row h-100">
+            <div class="col-12 col-md-7 mx-auto my-auto">
+                <div class="card card-body shadow text-center">
+                    <h3 class="mb-2">Verify Your Account</h3>
+                    <h1 class="text-danger" style="font-size: 15rem;"><i class="bi bi-envelope-exclamation-fill"></i>
+                    </h1>
+
+                    <% if (!token) { %>
+                        <form action="/auth/verify" method="post">
+
+                            <button class="mt-2 border-0 bg-transparent" type="submit">
+                                <h4> Resend verification link</h4>
+                            </button>
+                        </form>
+                        <% } else { %>
+                            <h4 class="mt-2">Check your email to verify your account</h4>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../../partials/footer.ejs') %>
+        </body>
+
+        </html>

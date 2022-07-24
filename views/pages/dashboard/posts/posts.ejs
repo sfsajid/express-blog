@@ -1,0 +1,77 @@
+<%- include('../../../partials/dashboard-header.ejs') %>
+    <div class="card mb-1 card-body shadow">
+        <% if (posts.length===0) { %>
+            <div class="container d-flex vh-100 flex-column justify-content-center align-items-center">
+                <div class="error">
+                    <h1>Oops!</h1>
+                </div>
+                <div class="text-center">
+                    <h5 class="text-muted py-1 fw-bolder">
+                        You have no posts available right now.
+                    </h5>
+
+                    <a href="/posts/newpost" class="btn btn-primary btn-lg btn-rounded shadow"><span
+                            class="fw-bold">Create a Post</span></a>
+                </div>
+            </div>
+
+
+            <% } else { %>
+                <div class="card-header mb-3">
+                    <h4>My Posts</h4>
+                </div>
+                <div class="row mb-3 row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <% for (let post of posts){ %>
+                        <div class="col">
+                            <div class="card border h-100 hover-zoom">
+                                <div class="bg-image">
+                                    <a href="/posts/editpost/<%= post.url %>">
+                                        <img src="<%= post.thumbnail %>" alt="<%= post.title %>"
+                                            style="height: 12rem; object-fit: cover; width: 100%;" />
+                                        <div class="mask"><span class="badge badge-secondary text-uppercase mt-2 ms-2">
+                                                <%= post.tags[0] %>
+                                            </span></div>
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">
+                                        <a class="post-title" href="/posts/editpost/<%= post.url %>">
+                                            <%= post.title %>
+                                        </a>
+                                    </h5>
+
+                                    <p class="card-text text-muted" style="font-size: 0.9rem;">
+                                        <%= truncate(post.body) %>
+                                    </p>
+
+                                </div>
+                                <div class="card-footer d-flex justify-content-between">
+                                    <small class="text-muted">
+                                        <i class="bi bi-calendar4 me-2"></i>
+                                        <%= moment(post.updatedAt) %>
+                                    </small>
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock me-1"></i>
+
+                                        <%= round(post.readTime) %> min read
+
+                                    </small>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        <% } %>
+                </div>
+                <% } %>
+                    <% if (totalPages> 1) { %>
+                        <%- include('../partials/pagination.ejs') %>
+                            <% } %>
+    </div>
+    </div <%- include('../../../partials/dashboard-footer.ejs') %>
+    </body>
+
+    </html>

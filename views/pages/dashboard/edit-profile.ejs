@@ -1,0 +1,177 @@
+<%- include('../../partials/dashboard-header.ejs') %>
+
+
+    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Profile /</span> Edit Profile</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <h5 class="card-header">Profile Details</h5>
+                <!-- Account -->
+                <div class="card-body">
+                    <div class="d-flex align-items-start align-items-sm-center gap-4">
+                        <img src="<%= user.profilePics %> " alt="user-avatar"
+                            class="d-block bg-secondary rounded img-profile shadow" width="100" height="100" />
+                        <div class="button-wrapper">
+                            <div class="d-flex">
+                                <label for="profilePicsFile" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                    <span class="d-none fs-6 d-sm-block">Upload new photo</span>
+                                    <i class="bi fs-6 bi-upload d-block d-sm-none"></i>
+                                    <input type="file" id="profilePicsFile" class="account-file-input"
+                                        accept="image/png, image/jpeg, image/jpg" hidden="" />
+                                </label>
+                                <button type="button" id="resetProfilePics"
+                                    class="btn btn-outline-secondary fs-6 mb-4 <%= user.profilePics.includes('default.png') ? 'd-none': 'd-block' %>">
+                                    <i class="bi fs-6 bi-recycle d-block d-sm-none"></i>
+                                    <span class="d-none d-sm-block">Reset</span>
+                                </button>
+                            </div>
+                            <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 5MB</p>
+                        </div>
+                    </div>
+                </div>
+                <hr class="my-0" />
+                <div class="card-body">
+                    <form id="formAccountSettings" method="POST" action="/dashboard/edit-profile">
+                        <div class="row">
+                            <div class="mb-3 col-md-6">
+                                <label for="name" class="form-label">Fullname</label>
+                                <input class="form-control<%= error.name ? ' is-invalid': '' %>" type="text" id="name"
+                                    name="name" value="<%= profile.name %>" />
+                                <div class="invalid-feedback">
+                                    <%= error.name %>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 col-md-6">
+                                <label for="email" class="form-label">E-mail</label>
+                                <input class="form-control" type="text" id="email" name="email"
+                                    value="<%= user.email %>" disabled />
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label for="nickname" class="form-label">Nickname</label>
+                                <input type="text" id="nickname" name="nickname"
+                                    class="form-control<%= error.nickbame ? ' is-invalid': '' %>"
+                                    value="<%= profile.nickname %>" />
+                                <div class="invalid-feedback">
+                                    <%= error.nickname %>
+                                </div>
+                            </div>
+                            <div class="mb-3 col-md-6">
+                                <label class="form-label" for="bio">Bio</label>
+                                <textarea name="bio" id="bio"
+                                    class="form-control form-control-lg<%= error.bio ? ' is-invalid': '' %>"><%= profile.bio %></textarea>
+                                <div class="invalid-feedback">
+                                    <%= error.bio %>
+                                </div>
+                            </div>
+                            <hr class="my-3">
+                            <div class="col-12 text-center my-3">
+                                <h4>Your Social Links</h4>
+                            </div>
+                            <div class="<%= error.website ?  'mb-4' :  'mb-3' %> col-md-6">
+                                <label for="website" class="form-label">Website</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-globe2 text-secondary"></i>
+                                        </span>
+                                    </div>
+                                    <input type="url" id="website" name="website"
+                                        class="form-control<%= error.website ? ' is-invalid': '' %>"
+                                        placeholder="https://example.com" value="<%= profile.links.website %>" />
+                                    <div class="invalid-feedback">
+                                        <%= error.website %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="<%= error.facebook ?  'mb-4' :  'mb-3' %> col-md-6">
+                                <label for="facebook" class="form-label">Facebook</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="bi text-primary bi-facebook"></i>
+                                        </span>
+                                    </div>
+                                    <input class="form-control<%= error.facebook ? ' is-invalid': '' %>" type="url"
+                                        id="facebook" name="facebook" placeholder="https://facebook.com/username"
+                                        value="<%= profile.links.facebook %>" />
+                                </div>
+                                <div class="invalid-feedback">
+                                    <%= error.facebook %>
+                                </div>
+                            </div>
+                            <div class="<%= error.twitter ?  'mb-4' :  'mb-3' %> col-md-6">
+                                <label for="twitter" class="form-label">Twitter</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="bi text-primary bi-twitter"></i>
+                                        </span>
+                                    </div>
+                                    <input class="form-control<%= error.twitter ? ' is-invalid': '' %>" type="url"
+                                        id="twitter" name="twitter" placeholder="https://twitter.com/username"
+                                        value="<%= profile.links.twitter %>" />
+                                </div>
+                                <div class="invalid-feedback">
+                                    <%= error.twitter %>
+                                </div>
+                            </div>
+                            <div class="<%= error.github ?  'mb-4' :  'mb-3' %> col-md-6">
+                                <label for="github" class="form-label">Github</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-github"></i>
+                                        </span>
+                                    </div>
+                                    <input class="form-control<%= error.github? ' is-invalid': '' %>" type="url"
+                                        id="github" name="github" placeholder="https://github.com/username"
+                                        value="<%= profile.links.github %>" />
+                                </div>
+                                <div class="invalid-feedback">
+                                    <%= error.github%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-primary me-2">Save changes</button>
+                            <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /Account -->
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <!-- mdb -->
+    <%- include('../../partials/dashboard-footer.ejs') %>
+        <!-- Modal -->
+        <div class="modal fade" id="crop-modal" data-mdb-backdrop="static" data-mdb-keyboard="false"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Resize Your Image</h5>
+                        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-block">
+                        <div id="cropped-image"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal"
+                            id="cancel-cropping">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="upload">Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/scripts/croppie.js"></script>
+        <script src="/scripts/profilePicsUpload.js"></script>
+
+        </body>
+
+        </html>

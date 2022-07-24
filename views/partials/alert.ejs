@@ -1,0 +1,18 @@
+<div class="my-2 container">
+    <% if (flashMessage.success) { %>
+        <div class="alert alert-dismissible alert-success d-flex align-items-center fade show my-2" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <%= flashMessage.success %>
+                <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <% } %>
+            <% if (flashMessage.fail) { %>
+                <div class="alert alert-dismissible alert-danger fade show my-2" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <%= flashMessage.fail %>
+                        <button type="button" class="btn-close" data-mdb-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <% } %>
+</div>

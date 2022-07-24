@@ -1,0 +1,120 @@
+<%- include('../partials/header.ejs') %>
+    <div class="container py-3">
+        <h2 class="text-center mb-5">Search result for - <%= searchTerm %>
+        </h2>
+        <div class="row">
+            <div class="col-0 col-md-2 d-none d-lg-block"><img src="/images/ads.png"
+                    class="img-fluid vh-100 sticky-md-top" alt="">
+            </div>
+            <div class="col">
+                <% if (posts.length===0) { %>
+                    <div class="d-flex vh-100 flex-column justify-content-center align-items-center">
+                        <div class="error">
+                            <h1>Oops!</h1>
+                        </div>
+                        <div class="text-center">
+                            <h5 class="text-muted py-1 fw-bolder">
+                                No results found for - <%= searchTerm %>
+                            </h5>
+
+                            <a href="/" class="btn btn-primary btn-lg btn-rounded shadow"><span class="fw-bold">Go
+                                    Homepage</span></a>
+                        </div>
+                    </div>
+                    <% } else { %>
+                        <section class="posts">
+                            <% for (let post of posts){ %>
+                                <div class="mx-auto card cm-shadow mb-3 mb-md-4">
+                                    <div class="d-md-flex">
+                                        <div class="bg-image d-md-none d-block hover-zoom pointer">
+                                            <img src="<%= post.thumbnail %>" alt="img" class="img-fluid" />
+                                            <div class="mask"><span
+                                                    class="badge badge-secondary text-uppercase mt-2 ms-2">
+                                                    <%= post.tags[0] %>
+                                                </span></div>
+                                        </div>
+                                        <div class="d-none d-md-block post-thumbnail pointer">
+
+                                            <img src="<%= post.thumbnail %>" class="img-fluid rounded-start" alt="">
+                                        </div>
+                                        <div class="w-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title mb-3">
+                                                    <a href="/posts/<%= post.url %>" class="post-title">
+                                                        <%= post.title %>
+                                                    </a>
+
+                                                </h5>
+
+                                                <p class="card-text text-muted" style="font-size: 0.9rem;">
+                                                    <%= truncate(post.body) %>
+                                                </p>
+
+                                            </div>
+                                            <div class="card-footer d-flex justify-content-between">
+                                                <span class="badge badge-secondary text-uppercase d-none d-md-block">
+                                                    <%= post.tags[0] %>
+                                                </span>
+                                                <small class="text-muted">
+                                                    <span><i class="bi bi-calendar2 me-1"></i> </span>
+                                                    <%= moment(post.createdAt) %>
+                                                </small>
+                                                <small class="text-muted user">
+                                                    <i class="bi bi-person-fill me-1"></i>
+                                                    <a href="/user/<%= post.author.username %>" class="muted-link">
+                                                        <%= post.author.name %>
+                                                    </a>
+                                                </small>
+                                                <small class="text-muted">
+                                                    <%= round(post.readTime) %> min read
+
+                                                </small>
+                                                <% if (user) { %>
+                                                    <span class="bookmark pointer" data-post="<%= post.url %>">
+                                                        <% if (bookmarks.includes(post.id)) { %>
+                                                            <i class="bi bi-bookmark-fill"></i>
+                                                            <% } else { %>
+                                                                <i class="bi bi-bookmark"></i>
+                                                                <% } %>
+                                                    </span>
+                                                    <% } %>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <% } %>
+                        </section>
+                        <% if (totalPages> 1) { %>
+                            <nav aria-label="Page Navigation">
+                                <ul class="pagination">
+                                    <li class="page-item <%= currentPage === 1 ? 'disabled': '' %>">
+                                        <a href="<%- `?page=${currentPage - 1}` %>" class="page-link">Previous</a>
+                                    </li>
+                                    <% for( let i=1; i <=totalPages; i++ ) { %>
+                                        <li class="page-item <%= currentPage === i ? 'active': '' %>">
+                                            <a href="<%- `?page=${i}` %>" class="page-link">
+                                                <%= i %>
+                                            </a>
+
+                                        </li>
+                                        <% } %>
+                                            <li class="page-item <%= currentPage === totalPages ? 'disabled': '' %>">
+                                                <a href="<%- `?page=${currentPage + 1}` %>" class="page-link">Next</a>
+                                            </li>
+                                </ul>
+                            </nav>
+                            <% } %>
+                                <% } %>
+            </div>
+            <div class="col-0 col-md-2 d-none d-lg-block"><img src="/images/ads.png"
+                    class="img-fluid vh-100 sticky-md-top" alt=""></div>
+        </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+        <script src="/scripts/bookmark.js"></script>
+        </body>
+
+        </html>

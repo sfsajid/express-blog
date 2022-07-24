@@ -1,0 +1,44 @@
+<%- include('../../partials/header.ejs') %>
+    <section class="py-2">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-6">
+                    <div class="card card-body cm-shadow" style="border-radius: 1.5rem;">
+                        <form action="/auth/recover" method="post">
+
+                            <div class="d-flex align-items-center mb-4 pb-1">
+                                <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+                                <span class="h2 fw-bold mb-0">Forgot Password</span>
+                            </div>
+
+                            <h5>Forgot Password? 🔒</h5>
+                            <p class="card-text text-muted">Enter your email and we'll send you instructions to
+                                reset
+                                your password</p>
+                            <div class="form-outline mt-3 <%= error.email ? 'mb-5' : 'mb-4'%>">
+                                <input type="email" id="email" name="email"
+                                    class="form-control form-control-lg <%= error.email ? 'is-invalid' : '' %>"
+                                    value="<%= value.email ? value.email : '' %>" />
+                                <label class="form-label" for="email">Email address</label>
+                                <div class="invalid-feedback">
+                                    <%= error.email %>
+                                </div>
+                            </div>
+                            <div class="pt-1 mb-4">
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Send Reset Link</button>
+                            </div>
+
+                            <!-- <a class="small text-muted" href="#!">Forgot password?</a> -->
+                            <p class="pb-lg-2">Already have an account? <a href="/auth/login">Login
+                                    here</a></p>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <%- include('../../partials/footer.ejs') %>
+        </body>
+
+        </html>

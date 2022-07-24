@@ -1,0 +1,194 @@
+<%- include('../partials/header.ejs') %>
+    <div class="" style="border-top: 10rem solid #00e007;">
+        <div class="container-lg" style="transform: translateY(-5rem);">
+            <div class="card card-body cm-shadow mb-3">
+                <img src="<%= user.profilePics %>" class="author-pic rounded-circle" alt="">
+                <div style="transform: translateY(-2rem);">
+
+                    <h2 class="card-title fw-bold">
+                        <%= user.name %>
+                    </h2>
+                    <p class="card-text">
+                        <%= user.profile.bio %>
+                    </p>
+                    <p class="card-text"><i class="bi bi-calendar4 me-2"></i>
+                        Joined on <%= formatDate(user.createdAt, 'DD MMM, YYYY' ) %>
+                    </p>
+                    <div class="d-flex justify-content-center">
+                        <% if (user.profile.links.website) { %>
+                            <a type="button" class="btn btn-secondary btn-floating me-2"
+                                href="<%= user.profile.links.website %>" target="_blank">
+                                <i class="fab fa-internet-explorer"></i>
+                            </a>
+                            <% } %>
+                                <% if (user.profile.links.facebook) { %>
+                                    <a type="button" class="btn btn-primary btn-floating me-2"
+                                        href="<%= user.profile.links.facebook %>" target="_blank">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <% } %>
+                                        <% if (user.profile.links.twitter) { %>
+                                            <a type="button" class="btn btn-primary btn-floating me-2"
+                                                href="<%= user.profile.links.twitter %>" target="_blank">
+                                                <i class="fab fa-twitter"></i>
+                                            </a>
+                                            <% } %>
+                                                <% if (user.profile.links.github) { %>
+                                                    <a type="button" class="btn btn-dark btn-floating me-2"
+                                                        href="<%= user.profile.links.github %>" target="_blank">
+                                                        <i class="fab fa-github"></i>
+                                                    </a>
+                                                    <% } %>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                    <div class="card card-body cm-shadow">
+                        <span class="fs-5">
+                            <i class="fa-solid fa-scroll me-2"></i>
+                            <%= posts.length %> posts published
+                        </span>
+                        <span class="fs-5">
+                            <i class="bi bi-chat me-2"></i>
+                            <%= comments.length %> comments made
+                        </span>
+                    </div>
+
+                    <% if (comments.length> 0) { %>
+                        <div class="card card-body d-none d-md-block my-3 cm-shadow">
+                            <h5 class="card-header p-0 pb-2 mb-3">Recent Comments</h5>
+                            <% for (let comment of comments) { %>
+                                <div class="d-flex align-items-center mb-3">
+                                    <img src="<%= comment.post.thumbnail %>" class="rounded"
+                                        style="height: 5rem; width: 5rem; object-fit: cover;" alt="thumbnail">
+                                    <div class="ms-3">
+                                        <p class="card-text mb-2">
+                                            <a class="muted-link"
+                                                href="/<%= `${comment.post.author.username}/${comment.post.url}/#comment-${toDecimal(comment._id)}` %>">
+                                                <%= `${cmTruncate(comment.body, 20)}
+                                                    on "${cmTruncate(comment.post.title, 25)}" ` %>
+                                            </a>
+                                        </p>
+                                        <small class="text-muted">
+                                            <i class="bi bi-calendar4 me-2"></i>
+                                            <%= formatDate(comment.createdAt, 'DD MMM, YYYY' ) %>
+                                        </small>
+
+
+                                    </div>
+                                </div>
+                                <% } %>
+                        </div>
+                        <% } %>
+
+                </div>
+                <div class="col-12 col-md-8">
+                    <section class="posts">
+                        <% for (let post of posts){ %>
+                            <div class="mx-auto card cm-shadow mb-3 mb-md-4">
+                                <div class="d-md-flex">
+                                    <div class="bg-image d-md-none d-block hover-zoom pointer">
+                                        <img src="<%= post.thumbnail %>" alt="img" class="img-fluid" />
+                                        <div class="mask"><span class="badge badge-secondary text-uppercase mt-2 ms-2">
+                                                <%= post.tags[0] %>
+                                            </span></div>
+                                    </div>
+                                    <div class="d-none d-md-block post-thumbnail pointer">
+
+                                        <img src="<%= post.thumbnail %>" class="img-fluid rounded-start" alt="">
+                                    </div>
+                                    <div class="w-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-3">
+                                                <a href="/<%= post.author.username %>/<%= post.url %>"
+                                                    class="post-title">
+                                                    <%= post.title %>
+                                                </a>
+
+                                            </h5>
+
+                                            <p class="card-text text-muted" style="font-size: 0.9rem;">
+                                                <%= truncate(post.body) %>
+                                            </p>
+
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between">
+                                            <span class="badge badge-secondary text-uppercase d-none d-md-block">
+                                                <%= post.tags[0] %>
+                                            </span>
+                                            <small class="text-muted">
+                                                <span><i class="bi bi-calendar2 me-1"></i> </span>
+                                                <%= moment(post.createdAt) %>
+                                            </small>
+                                            <small class="text-muted user">
+                                                <i class="bi bi-person-fill me-1"></i>
+                                                <a href="/user/<%= post.author.username %>" class="muted-link">
+                                                    <%= post.author.name %>
+                                                </a>
+                                            </small>
+                                            <small class="text-muted">
+                                                <i class="bi bi-clock me-1"></i>
+                                                <%= round(post.readTime) %> min read
+
+                                            </small>
+                                            <% if (logged.bookmarks.length> 0) { %>
+                                                <span class="bookmark pointer" data-post="<%= post.url %>">
+                                                    <% if (logged.bookmarks.includes(post.id)) { %>
+                                                        <i class="bi bi-bookmark-fill"></i>
+                                                        <% } else { %>
+                                                            <i class="bi bi-bookmark"></i>
+                                                            <% } %>
+                                                </span>
+                                                <% } %>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <% } %>
+                    </section>
+                    <% if (totalPages> 1) { %>
+                        <%- include('../partials/pagination.ejs') %>
+                            <% } %>
+
+                                <section class="comments d-md-none">
+                                    <% if (comments.length> 0) { %>
+                                        <div class="card card-body my-3 cm-shadow">
+                                            <h5 class="card-header p-0 pb-2 mb-3">Recent Comments</h5>
+                                            <% for (let comment of comments) { %>
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <img src="<%= comment.post.thumbnail %>" class="rounded"
+                                                        style="height: 5rem; width: 5rem; object-fit: cover;"
+                                                        alt="thumbnail">
+                                                    <div class="ms-3">
+                                                        <p class="card-text mb-2">
+                                                            <a class="muted-link"
+                                                                href="/<%= `${comment.post.author.username}/${comment.post.url}/#comment-${toDecimal(comment._id)}` %>">
+                                                                <%- `${cmTruncate(comment.body, 25)} <span
+                                                                    class="text-black">on</span>
+                                                                    "${cmTruncate(comment.post.title, 30)}" ` %>
+                                                            </a>
+                                                        </p>
+                                                        <small class="text-muted">
+                                                            <i class="bi bi-calendar4 me-2"></i>
+                                                            <%= formatDate(comment.createdAt, 'DD MMM, YYYY' ) %>
+                                                        </small>
+
+
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                        <% } %>
+                                </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../partials/footer.ejs') %>
+        </body>
+
+        </html>

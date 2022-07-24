@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            <%= title %>
+        </title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.3.0/mdb.min.css" rel="stylesheet" />
+        <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
+
+        <!-- bootstrap icons -->
+        <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
+        <!-- sidenav css -->
+        <link rel="stylesheet" href="/styles/sidenav.css" />
+        <!-- croopie js css -->
+        <link rel="stylesheet" href="/styles/croppie.css">
+        <!-- froala-editor css -->
+        <link rel="stylesheet" href="/styles/froala-editor.css">
+    </head>
+
+    <body>
+        <!-- main app -->
+        <div class="app position-relative">
+            <!-- navbar -->
+            <aside class="sidenav shadow-6-soft">
+                <button class="toggler" id="nav-closer">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+
+                <nav class="sidenav-menu mt-3">
+                    <ul class="main-menu">
+
+                        <li class="sidenav-item<%= active.dashboard ? ' active': '' %>">
+                            <a href="/dashboard" class="menu-link"><i class="bi bi-house"></i> Dashboard</a>
+                        </li>
+                        <li class="sidenav-item<%= active.bookmark ? ' active': '' %>">
+                            <a href="/dashboard/bookmarks" class="menu-link"><i class="bi bi-bookmarks-fill"></i>
+                                Bookmarks</a>
+                        </li>
+                        <li class="sidenav-item<%= active.comment ? ' active': '' %>">
+                            <a href="/dashboard/comments" class="menu-link"><i class="bi bi-chat"></i> Comments</a>
+                        </li>
+
+                        <li class="sidenav-item<%= active.account ? ' active open': '' %>">
+                            <a class="menu-link submenu">
+                                <i class="bi bi-window-dock"></i> Account</a>
+                            <div class="content">
+                                <ul class="menu-sub">
+                                    <li class="subitem<%= active.editProfile ? ' active': '' %>">
+                                        <a href="/dashboard/edit-profile" class="sub-link">Edit Profile</a>
+                                    </li>
+                                    <li class="subitem<%= active.settings ? ' active': '' %>">
+                                        <a href="/dashboard/settings" class="sub-link">Settings</a>
+                                    </li>
+                                    <li class="subitem">
+                                        <a href="#" class="sub-link">SubItem 3</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="sidenav-item<%= active.post ? ' active open': '' %>">
+                            <a class="menu-link submenu">
+                                <i class="bi bi-card-list"></i> Posts</a>
+                            <div class="content">
+                                <ul class="menu-sub">
+                                    <li class="subitem<%= active.myPosts ? ' active': '' %>">
+                                        <a href="/posts" class="sub-link">My
+                                            Posts</a>
+                                    </li>
+                                    <li class="subitem">
+                                        <a href="/posts/newpost"
+                                            class="sub-link<%= active.createPost ? ' active': '' %>">Create Post</a>
+                                    </li>
+                                    <li class="subitem">
+                                        <a href="#" class="sub-link">SubItem 3</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <% if (user.role==='admin' ) { %>
+
+
+                            <li class="sidenav-item<%= active.admin ? ' active open': '' %>">
+                                <a class="menu-link submenu">
+                                    <i class="bi bi-person"></i> Administration</a>
+                                <div class="content">
+                                    <ul class="menu-sub">
+                                        <li class="subitem<%= active.users ? ' active': '' %>">
+                                            <a href="/admin/users" class="sub-link">Users</a>
+                                        </li>
+                                        <li class="subitem">
+                                            <a href="/posts/newpost"
+                                                class="sub-link<%= active.f ? ' active': '' %>">Create
+                                                Post</a>
+                                        </li>
+                                        <li class="subitem">
+                                            <a href="#" class="sub-link">SubItem 3</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <% } %>
+                    </ul>
+                </nav>
+            </aside>
+            <!-- Rest of content -->
+            <main class="main-content">
+                <div class="container-fluid">
+                    <!-- Navbar -->
+                    <!-- Navbar -->
+                    <nav class="navbar bg-white mt-2 mb-3 rounded-3 navbar-light">
+                        <!-- Container wrapper -->
+                        <div class="container-fluid d-flex">
+                            <div class="d-flex align-content-center">
+                                <button class="navbar-toggler fs-2 d-md-none" id="nav-opener">
+                                    <i class="bi bi-list"></i>
+                                </button>
+                                <a class="navbar-brand" href="/">Brand</a>
+                                <ul class="navbar-nav">
+                                    <!-- Link -->
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#">Explore</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Collapsible wrapper -->
+                            <div>
+                                <a class="dropdown-toggle" role="button" data-mdb-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <img src="<%- user.profilePics %>" alt="Profile" class="rounded-circle img-profile"
+                                        height="40px" />
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <div
+                                            class="dropdown-item d-flex align-items-center justify-content-between px-2">
+                                            <img src="<%- user.profilePics %>" alt="Profile"
+                                                class="bg-secondary rounded-circle img-profile" height="40px" />
+                                            <span class="fw-bold">
+                                                <%= user.name %>
+                                            </span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item" href="/dashboard/edit-profile"><i
+                                                class="bi bi-person fs-5 me-2"></i> My
+                                            Profile</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/dashboard/settings"><i
+                                                class="bi bi-gear fs-5 me-2"></i>
+                                            Settings</a>
+                                    </li>
+
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/auth/logout"><i
+                                                class="bi bi-box-arrow-right fs-5 me-2"></i> Log
+                                            Out</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Container wrapper -->
+                    </nav>
+                    <!-- Navbar -->

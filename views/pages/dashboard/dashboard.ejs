@@ -1,0 +1,188 @@
+<%- include('../../partials/dashboard-header.ejs') %>
+    <% if (!posts.length> 0 || !likes.length > 0 || !comments.length > 0) { %>
+        <div class="card card-body shadow">
+            <div class="container d-flex vh-100 flex-column justify-content-center align-items-center">
+                <div class="error">
+                    <h1>Oops!</h1>
+                </div>
+                <div class="text-center">
+                    <h5 class="text-muted py-1 fw-bolder">
+                        There are nothing to show right now.
+                    </h5>
+                </div>
+            </div>
+
+        </div>
+        <% } else { %>
+            <% if (posts.length> 0) { %>
+                <div class="card mb-4 shadow">
+                    <div class="card-header">
+                        <h4>Recent Posts</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3 row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                            <% for (let post of posts){ %>
+                                <div class="col">
+                                    <div class="card border h-100 hover-zoom">
+                                        <div class="bg-image">
+                                            <a href="/posts/editpost/<%= post.url %>">
+                                                <img src="<%= post.thumbnail %>" alt="<%= post.title %>"
+                                                    style="height: 12rem; object-fit: cover; width: 100%;" />
+                                                <div class="mask"><span
+                                                        class="badge badge-secondary text-uppercase mt-2 ms-2">
+                                                        <%= post.tags[0] %>
+                                                    </span></div>
+                                            </a>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title mb-3">
+                                                <a class="post-title" href="/posts/editpost/<%= post.url %>">
+                                                    <%= post.title %>
+                                                </a>
+                                            </h5>
+
+                                            <p class="card-text text-muted" style="font-size: 0.9rem;">
+                                                <%= truncate(post.body) %>
+                                            </p>
+
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between">
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar4 me-1"></i>
+                                                <%= moment(post.createdAt) %>
+                                            </small>
+                                            <small class="text-muted">
+                                                <i class="bi bi-clock me-1"></i>
+
+                                                <%= round(post.readTime) %> min read
+
+                                            </small>
+                                            <span class="bookmark pointer" data-post="<%= post.url %>">
+                                                <% if (profile.bookmarks.includes(post._id)) { %>
+                                                    <i class="bi bi-bookmark-fill"></i>
+                                                    <% } else { %>
+                                                        <i class="bi bi-bookmark"></i>
+                                                        <% } %>
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <% } %>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+
+                    <% if (likes.length> 0) { %>
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h4>Recently Liked</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3 row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                                    <% for (let post of likes){ %>
+                                        <div class="col">
+                                            <div class="card border h-100 hover-zoom">
+                                                <div class="bg-image">
+                                                    <a href="/posts/editpost/<%= post.url %>">
+                                                        <img src="<%= post.thumbnail %>" alt="<%= post.title %>"
+                                                            style="height: 12rem; object-fit: cover; width: 100%;" />
+                                                        <div class="mask"><span
+                                                                class="badge badge-secondary text-uppercase mt-2 ms-2">
+                                                                <%= post.tags[0] %>
+                                                            </span></div>
+                                                    </a>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h5 class="card-title mb-3">
+                                                        <a class="post-title" href="/posts/editpost/<%= post.url %>">
+                                                            <%= post.title %>
+                                                        </a>
+                                                    </h5>
+
+                                                    <p class="card-text text-muted" style="font-size: 0.9rem;">
+                                                        <%= truncate(post.body) %>
+                                                    </p>
+
+                                                </div>
+                                                <div class="card-footer d-flex justify-content-between">
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-calendar4 me-1"></i>
+                                                        <%= moment(post.createdAt) %>
+                                                    </small>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-clock me-1"></i>
+
+                                                        <%= round(post.readTime) %> min read
+
+                                                    </small>
+                                                    <span class="bookmark pointer" data-post="<%= post.url %>">
+                                                        <% if (profile.bookmarks.includes(post._id)) { %>
+                                                            <i class="bi bi-bookmark-fill"></i>
+                                                            <% } else { %>
+                                                                <i class="bi bi-bookmark"></i>
+                                                                <% } %>
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+
+                            <% if (comments.length> 0) { %>
+                                <div class="card mb-4 shadow">
+                                    <div class="card-header">
+                                        <h4>Recent Comments</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <% for (let comment of comments) { %>
+                                            <div class="d-flex align-items-center mb-3">
+                                                <img src="<%= comment.post.thumbnail %>" class="rounded"
+                                                    style="height: 5rem; width: 5rem; object-fit: cover;"
+                                                    alt="thumbnail">
+                                                <div class="ms-3">
+                                                    <p class="card-text mb-2">
+                                                        <a class="muted-link"
+                                                            href="/<%= `${comment.post.author.username}/${comment.post.url}/#comment-${toDecimal(comment._id)}` %>">
+                                                            <%- `${cmTruncate(comment.body, 25)} <span
+                                                                class="text-black">on</span>
+                                                                "${cmTruncate(comment.post.title, 40)}" ` %>
+                                                        </a>
+
+                                                    </p>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-calendar4 me-2"></i>
+                                                        <%= formatDate(comment.createdAt, 'DD MMM, YYYY' ) %>
+                                                    </small>
+
+
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                    </div>
+                                </div>
+                                <% } %>
+
+                                    <% } %>
+
+                                        <%- include('../../partials/alert.ejs') %>
+
+                                            <%- include('../../partials/dashboard-footer.ejs') %>
+                                                <script src="/scripts/bookmark.js"></script>
+
+                                                </body>
+
+                                                </html>
